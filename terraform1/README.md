@@ -30,3 +30,10 @@ export AWS_SECRET_ACCESS_KEY_ID="balblablablabla"
 - to see all the resources that we have in our state file; we can run the command "terraform show"
 - the sate file which is stored locally in our machine
 - when working with others colleages we need to save that same state file in remote place, like amazon S3 bucket or terraform cloud, in order to access both the same file
+
+## Step 3:
+- we will add a data block and a resource block (EC2 instance as a web server which will be saved in one of our public subnet that we already created)
+- and then by typing "terraform plan", terraform will compare our updated configuration file to the state file --> result 01 resource will be added which the EC2 instance
+- then if we finished checking that plan we can type "terraform apply"
+- if we want to show the new state after the "apply" of course we can type "terraform show"
+- also we can list the resources without details bu running "terraform state list"
