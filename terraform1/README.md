@@ -25,3 +25,8 @@ export AWS_SECRET_ACCESS_KEY_ID="balblablablabla"
 - then we can type "terraform plan" to see/check the new state that we want to create
 - finally we can type "terraform apply"
 - to destroy all the resources we can use "terraform destroy".
+
+## Step 2:
+- to see all the resources that we have in our state file; we can run the command "terraform show"
+- the sate file which is stored locally in our machine
+- when working with others colleages we need to save that same state file in remote place, like amazon S3 bucket or terraform cloud, in order to access both the same file
