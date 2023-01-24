@@ -1,19 +1,28 @@
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-1"
-  # method 1:
-  # access_key = "blablablablabla"
-  # secret_key = "blablablablablablablablablabla"
-  # method 2:
-  # to run in the terminal the commands: export AWS_ACCESS_KEY="blablablabla" & export AWS_SECRET_KEY="blablablablablablablabla"
-  # method 3:
-  shared_credentials_files = "/users/bilen/.aws/creds"
-  profile                  = "bileln-us-east-1"
 }
 
 #Retrieve the list of AZs in the current AWS region
 data "aws_availability_zones" "available" {}
 data "aws_region" "current" {}
+
+# Terraform Data Block - Lookup Ubuntu 20.04
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"]
+}
 
 #Define the VPC 
 resource "aws_vpc" "vpc" {
@@ -124,57 +133,46 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
-# adding a new resource block
-resource "aws_instance" "web" {
-  ami                    = "ami-01cc34ab2709337aa"
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public_subnets["public_subnet_1"].id
-  vpc_security_group_ids = ["sg-0f19288ccf5a47cc3"]
-
+# Terraform Resource Block - To Build EC2 instance in Public Subnet
+resource "aws_instance" "web_server" {                            # BLOCK
+  ami           = data.aws_ami.ubuntu.id                          # Argument with data expression
+  instance_type = "t2.micro"                                      # Argument
+  subnet_id     = aws_subnet.public_subnets["public_subnet_1"].id # Argument with value as expression
   tags = {
-    "Terraform" = "true"
+    Name = "Web EC2 Server"
   }
 }
 
-# Step 8 | task 2: add two new resource
-# Step 8 | task 5: update the amazon s3 bucket to use the random id
-resource "aws_s3_bucket_acl" "my-new-S3-bucket" {
-  # task 2: is like this
-  # bucket = "my-new-tf-test-bucket-bilel"
+# Step 9 | task 1: add a new VPC resource block with static values
+# then we run "terrafom plan" -->"terrafom apply"
+# when we use the resource's parameters this way (hardcoded meaning like "10.0.250.0/24" we will always have it like so, but if we want to automate it to create many other resources with different values we can sue the input variables which are in the task 2 of this step = to be re-usable)
+resource "aws_subnet" "variables-subnet" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = "10.0.250.0/24"
+  availability_zone       = "us-east-la"
+  map_public_ip_on_launch = true
 
-  # task 5: like this (update) --> then "terraform plan" --> "terraform apply"
-  bucket = "my-new-tf-test-bucket-${random_id.randomness.hex}"
   tags = {
-    Name = "My S3 Bucket"
-    Purpose = "Intro to Resource Blocks Lab"
+    Name      = "sub-variables-us-east-1a"
+    Terraform = "true"
   }
 }
-resource "aws_s3_bucket_acl" "my_new_bucket_acl" {
-  bucket = aws_s3_bucket.my_new_bucket_acl.id
-  acl    = "private"
-}
 
-# Step 8 | task 3: create a new aws security group
-resource "aws_security_group" "my-new-security-group" {
-  name = "web_server_inbound"
-  description = "Allow inbound traffic on tcp/443"
-  vpc_id = aws_vpc.vpc.id
+# Step 9 | task 2: define new variable blocks to declare new variables
+# so we go to the "variables.tf" file and add 03 new variables
+# then we come back here and use them by replacing the hardcoded value with those 03 variables
+# this way when we run "terrafom plan/apply"; terraform will ask us to enter the value of the variables interactivily on the CLI
+# then we run "terrafom plan" --> "terraform apply"
+# Step 9 | task 3: modify the value of the variable by adding defaults
+# then we run "terrafom plan" --> "terraform apply"; this time terraformwill use the "default" value that we declared
+resource "aws_subnet" "variables-subnet" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.variables_sub_cird
+  availability_zone       = var.variables_sub_az
+  map_public_ip_on_launch = var.variables_sub_auto_ip
 
-  ingress {
-    description = "Allow 443 from the Internet"
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
   tags = {
-  Name = "web_server_inbound"
-  Purpose = "Intro to Resource Blocks Lab"
-}
-
-# Step 8 | task 4: configure a resource from the random provider
-# since we didn't define any new provider for this random resource, we need to run "terraform init" before "terraform plan/apply"
-# when running "terraform init" terraform will download the plugin by him self
-resource "random_id" "randomness" {
-  byte_lenght = 16
+    Name      = "sub-variables-${var.variables_sub_az}"
+    Terraform = "true"
+  }
 }

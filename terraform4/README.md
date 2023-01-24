@@ -25,3 +25,11 @@
     - task 3: create a new aws security group (then we can run "terraform plan", "terraform apply -auto-approve")
     - task 4: configure a resource from the random provider
     - task 5: update the amazon s3 bucket to use the random id (we are going to use that 16_lenght_random_id for our S3 bucket). Note: since aws require that the resource name should be globally unique, so that's mean that we can use the random_provider to generate random id to use to automate the S3 bucket, that's a solution, because that's unlikely to match that random_16_lenght_id from any other aws user
+
+## Step 9:
+- Goal of the step: is to talk about input variables; specificly the variable block that we find in our terraform configuration
+- what we are going to do is:
+    - task 1: add a new VPC resource block with static values
+    - task 2: define new variable blocks to declare new variables in our configuration file
+    - task 3: modify the value of the variable by adding defaults
+- we are still with the same demo-example: VPC and 03 public subnet + 03 private subnet
