@@ -170,6 +170,7 @@ resource "aws_security_group" "my-new-security-group" {
   tags = {
   Name = "web_server_inbound"
   Purpose = "Intro to Resource Blocks Lab"
+  }
 }
 
 # Step 8 | task 4: configure a resource from the random provider
