@@ -1,14 +1,14 @@
 # Configure the AWS Provider
 provider "aws" {
-  region     = "us-east-1"
-# method 1:
+  region = "us-east-1"
+  # method 1:
   # access_key = "blablablablabla"
   # secret_key = "blablablablablablablablablabla"
-# method 2:
+  # method 2:
   # to run in the terminal the commands: export AWS_ACCESS_KEY="blablablabla" & export AWS_SECRET_KEY="blablablablablablablabla"
-# method 3:
+  # method 3:
   shared_credentials_files = "/users/bilen/.aws/creds"
-  profile = "bileln-us-east-1"
+  profile                  = "bileln-us-east-1"
 }
 
 #Retrieve the list of AZs in the current AWS region
@@ -135,3 +135,46 @@ resource "aws_instance" "web" {
     "Terraform" = "true"
   }
 }
+
+# Step 8 | task 2: add two new resource
+# Step 8 | task 5: update the amazon s3 bucket to use the random id
+# resource "aws_s3_bucket_acl" "my-new-S3-bucket" {
+  # task 2: is like this
+  # bucket = "my-new-tf-test-bucket-bilel"
+
+  # task 5: like this (update) --> then "terraform plan" --> "terraform apply"
+#   bucket = "my-new-tf-test-bucket-${random_id.randomness.hex}"
+#   tags = {
+#     Name = "My S3 Bucket"
+#     Purpose = "Intro to Resource Blocks Lab"
+#   }
+# }
+# resource "aws_s3_bucket_acl" "my_new_bucket_acl" {
+#   bucket = aws_s3_bucket.my_new_bucket_acl.id
+#   acl    = "private"
+# }
+
+# # Step 8 | task 3: create a new aws security group
+# resource "aws_security_group" "my-new-security-group" {
+#   name = "web_server_inbound"
+#   description = "Allow inbound traffic on tcp/443"
+#   vpc_id = aws_vpc.vpc.id
+
+#   ingress {
+#     description = "Allow 443 from the Internet"
+#     from_port = 443
+#     to_port = 443
+#     protocol = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+#   tags = {
+#   Name = "web_server_inbound"
+#   Purpose = "Intro to Resource Blocks Lab"
+# }
+
+# Step 8 | task 4: configure a resource from the random provider
+# since we didn't define any new provider for this random resource, we need to run "terraform init" before "terraform plan/apply"
+# when running "terraform init" terraform will download the plugin by him self
+# resource "random_id" "randomness" {
+#   byte_lenght = 16
+# }
