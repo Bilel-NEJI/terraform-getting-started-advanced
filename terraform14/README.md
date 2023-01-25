@@ -1,8 +1,8 @@
-# This is the explanation file for the folder "terraform13":
+# This is the explanation file for the folder "terraform14":
 
 
-## Step 17:
-- howo to work with multiple Terraform Providers
+## Step 18:
+- how to work with TLS Provider + Generate SSH Key
 - see the attached pdf file for more details
 - what we are going to do:
     - task 1: Install Terraform HTTP provider version
