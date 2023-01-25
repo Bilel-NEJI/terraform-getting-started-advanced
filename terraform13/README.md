@@ -1,7 +1,7 @@
 # This is the explanation file for the folder "terraform14":
 
 
-## Step 18:
+## Step 17:
 - how to Generate an SSH Key with the Terraform TLS Provider
 - we are going to add a new provider to help us to generate SSH Key, we are going to use this SSH Key in future Lab, so this is going to be a foundational Lab for upcoming Labs
 - see the attached pdf file for more details
