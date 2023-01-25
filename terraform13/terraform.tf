@@ -18,6 +18,7 @@ terraform {
 
     # Step 16 | task 3 & 4: Install Terraform (an other provider) Random provider version
     # remember we can check the installed providers with the command "terraform version"
+    # then of course we run the "terraform init" ("terrafrom version")
     random {
       source  = "hashicorp/random"
       version = "3.1.0"
