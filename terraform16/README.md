@@ -17,5 +17,5 @@
     - task 5: Create a "remote-exec" provisioner block to pull down and install web application
     - task 6: Apply your configuration and watch for the remote connection.
     - task 7: Pull up the web application and ssh into the web server (optional)
-        --> command to shwo case the ip address of our server: "terraform state show aws_instance.ubuntu_server"
-        --> then connet to my ubunti instance; issue/run the ssh command; write in the terminal: ssh -i MyAWSKey.pem ubuntu@18.209.228.49 --> ssh the key with username (ubuntu) on the public ip that we got from the deployed server
+        - command to shwo case the ip address of our server: "terraform state show aws_instance.ubuntu_server"
+        - then connet to my ubunti instance; issue/run the ssh command; write in the terminal: ssh -i MyAWSKey.pem ubuntu@18.209.228.49 --> ssh the key with username (ubuntu) on the public ip that we got from the deployed server
