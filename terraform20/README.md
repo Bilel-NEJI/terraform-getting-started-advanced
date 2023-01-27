@@ -2,7 +2,7 @@
 
 
 ## Step 24:
-- how to work with terraform workspace; using the same code base and have different environment (development, production, stage, etc)
+- how to work with terraform workspaces; using the same code base and have different environment (development, production, stage, etc)
 - knowing that terraform depends on the "state", so it needs to store the state in the "terraform.tf" file
 - terraform needs to map real world resource to our configuration, so it need a place to store the state and here comes terraform workspaces, so terraform state belongs to terrafom workspaces --> in fact we were deploying all those resources in a default workspace, but we can change which workspace we want to store state in
 - so let's go and take a look on the terraform workspace command and how it relates to these DRY (Don't Repeat Yourself) and being able to toggle between those different environments
