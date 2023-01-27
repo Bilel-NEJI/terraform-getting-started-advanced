@@ -1,3 +1,4 @@
+# Step 24:
 /*
 Name: IaC Buildout for Terraform Associate Exam
 Description: AWS Infrastructure Buildout
@@ -14,6 +15,11 @@ provider "aws" {
   }
 }
 
+# Step 24 | task 5: Utilizing the ${terraform.workspace} interpolation sequence within your configuration
+# adding the new tag (we are in workspace default | check the "README.md" file and read the instructions)
+# so this will be for any new items that get created inside my aws environment
+# this will populate the workspace name into our terraform configuration
+# if we run "terrafom plan" this will indicate the tag (which is development, the current one that we already selected) in each resource --> so we go ahead and apply that
 # Configure the AWS Provider
 provider "aws" {
   region = "us-east-1"
