@@ -7,7 +7,6 @@
 - terraform needs to map real world resource to our configuration, so it need a place to store the state and here comes terraform workspaces, so terraform state belongs to terrafom workspaces --> in fact we were deploying all those resources in a default workspace, but we can change which workspace we want to store state in
 - so let's go and take a look on the terraform workspace command and how it relates to these DRY (Don't Repeat Yourself) and being able to toggle between those different environments
 - we can use the command "terraform workspace show" to see which workspace we are working with currently (to see all commands related to the workspace use "terraform workspace -help")
--  
 - see the attached pdf file for more details
 - what we are going to do:
     - task 1: Using Terraform Workspaces (Open Source)
