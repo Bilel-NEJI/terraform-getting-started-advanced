@@ -1,0 +1,41 @@
+# This is the explanation file for the folder "terraform22":
+
+
+## Step 26:
+- how to debugg terraform
+- see the attached pdf file for more details
+- what we are goign to do:
+    - task 1: Enable Logging
+        - it depends on your OS (linux, windows, etc)
+            - linux:
+                - by enabling environment variable ==> export TF_LOG=TRACE
+                - the environment variable is called "TF_LOG"
+            - windows | powershell:
+                - by enabling environment variable ==> $env:TF_LOG="TRACE"
+                - the environment variable is called "TF_LOG"
+        - we can set out environment variable levels in different levels:
+            - TRACE
+            - DEBUG
+            - INFO
+            - WARN
+            - ERROR
+        - by running "terraform init/apply" these commands; the logs will be in the log console
+    - task 2: Set Logging Path
+        - if we want to have the logs in a log-file, we will set it through an environment variable:
+            - linux:
+                - by enabling environment variable ==> export TF_LOG_PATH="terraform_log.txt"
+                - the environment variable is called "TF_LOG_PATH"
+            - windows | powershell:
+                - by enabling environment variable ==> $env:TF_LOG_PATH="terraform_log.txt"
+                - the environment variable is called "terraform_log.txt"
+        - by running "terraform init -upgrade/apply" these commands; the logs will be in that log-file. The logs will not be in the console (back to usual/normal)
+        - a new file will be created; "terraform_log.txt"
+    - task 3: Disable Logging
+        - if we want to turn-off the debugging, we have a command to do that:
+            - we will the value of that environment variable to null: 
+                - linux:
+                    - export TF_LOG=""
+                    - export TF_LOG_PATH=""
+                - windows:
+                    - $env:TF_LOG=""
+                    - $env:TF_LOG_PATH=""
