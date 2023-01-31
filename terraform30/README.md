@@ -41,3 +41,4 @@
         - then we do to the "terraform.tf" to remove the backend "s3" and replace with the http backend; knowing that terraform can only accept a single backend
         - then "terraform init -reconfigure"
         - then "apply"
+        - if we want to "destroy" the deployment of our resources, we need to keep our web server (python) running before running "destroy". if we run "destroy" while our web server is off it won't be able to access our state file then won't be able to "destroy" the deployment
