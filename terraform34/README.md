@@ -1,0 +1,48 @@
+# This is the explanation file for the folder "terraform34":
+
+
+## Step 38:
+- how to work with 
+- see the .pdf for more details 
+- whar we are going to do:
+    - task 1: Terraform backend block
+    - task 2: Partial backend configuration via a file
+        - we go and create a folder called "state_configuration" to provide partial configuration of the backend block
+        - and under that folder we create two files:
+            - "dev_local.hcl" --> and paste its content from the .pdf file
+            - "test_local.hcl" --> and paste its content from the .pdf file
+        - these two contents provide partial configuration for the backend
+        - we also need to create another folder "state_data" (empty) which is going to be a convient place to store our state information outside of the working directory it self
+        - then to utilize that "dev_local.hcl" file to specify where we want to store our "dev state file"; so we run:
+            - terraform init -backend-config=state_configuration/dev_local.hcl -migrate-state (here we speficy where our partial configuration resides/exits)
+            - terraform plan
+            - terraform apply
+        - now we can see a new state file inside of our "state_data" folder
+        - we can do the same for the second .hsl file
+        - we use this example of partial backend configuration to "specify where our state file to reside"
+    - task 3: Partial backend configuration via command line
+        - we can do that without specifying files to do so, we can do it via the cli
+        - see the .pdf for more details
+    - task 4: Specifying multiple partial backend configurations
+        - we define the state file to be stored in our aws s3-bucket
+        - then we create a file "dev-s3-state.hcl" under our folder "state_configuration"
+        - then we will take the content of our s3-backend "terraform.tf" file and put it inside our "dev-s3-state.hcl" file
+        - then we run:
+            - terraform init -backend-config="state_configuration/dev-s3-state.hcl" -migrate-state
+            - terraform plan
+            - terraform apply
+        - by doing this you can see that we provided the partial configuration from this "dev-s3-state.hcl"
+        - also we can break out our backend into multiple configuration files all containing partial configuration
+        - see the .pdf file "4.3 Partial ..."
+        - we seperate the key and the bucket into two files:
+            - dev-s3-state-key.hcl
+            - s3-state-bucket.hcl
+        - then we run these commands:
+            - terraform init -backend-config="state_configuration/s3-state-bucket.hcl" \ -backend-config="state_configuration/dev-s3-state-key.hcl" \ -migrate-state
+            - terraform plan
+            - terraform apply
+    - task 5: Partial backend configuration via CLI prompt
+        - it's the case when we missed to specify one required parameter for example, at that time terraform will ask us to provide it via cli
+        - see the .pdf file
+    - task 6: Backend configuration from multiple locations
+    - task 7: Change state backend configuration back to default
