@@ -1,0 +1,57 @@
+# This is the explanation file for the folder "terraform40":
+
+
+## Step 44:
+- we are going to continue talking about variables; securing secrets exactly (like username, passwords, access token, private key, etc)
+- see the .pdf for more details 
+- whar we are going to do:
+    - task 1: Do Not Store Secrets in Plain Text (explanation)
+    - task 2: Mark Variables as Sensitive
+        - this section we did before in previous lab
+        - so fo that we go to the file "variables.tf" and add a new one called "phone_number" and also to the "main.tf" file and add output also there called "phone_number" which marked as sensitive
+        - then we go back to our "main.tf"
+        - then "apply" --> we know that the only change is that we have a new output
+    - task 3: Environment Variables
+        - in the current status now is, we have a default value (we are talking about "phone_number") that is exposed in our files, and this what we don't want to have
+        - for this we are going back now to the just created variable "phone_number" and remove the default argument (remove "default = "867-5309"")
+        - and instead we are going to use an environment varaible to set that value
+        - note here:
+            - if we are using a local backend or a remote backend -not a terraform cloud backend-; then the way we work with environment variables is the usual one that we worked with before
+            - so in our case it will be: export TF_VAR_phone_number=867-5309
+            - but when using terraform cloud, we go to our workspace in terraform cloud and we create new environment variables (or after checking if we have ones, we work with)
+        - then run "apply" --> this way we remove sensitive information from our terraform files and we used environment variables for example to keep them outseide the files
+        - and to see the value of that varible "phone_number" (that we hided it from the terraform files and pass it through environment variables); we can run "terraform output phone_number"
+    - task 4: Secret Stores: THird Party solutions to store our secrets (for example, Vault, AWS Secrets manager)
+        - is about how we use a third party solution; such as HashiCorp Vault to inject secrets into terraform
+        - meaning when we store secrets in vault, we can use terraform to go and pull that data down and use it; for example we stored a username and password in vault then we use terraform to pull them and pass them to our application
+        - in this lab we are going to use hashipcorp to save our new varaible
+        - so 1st thing we go to the terminal and install vault
+        - then we need to start vault in a dev server (mode) using the command: vault start -dev
+        - after runnig the vault server we are going to get an "unseal key" and a "root token" (inside the vault terminal), so we copy that "root token" unseal key and use it
+        - then we open a new terminal (to let out vault server up and running; no ctrl+c) and we set our environment variables by the command bellow in order to set the vault server to http://127.0.0.1:8200 by exporting the ADDR, because by default vault does not use tls and it uses https by default
+        - to do so we run the following command: export VAULT_ADDR=http://127.0.0.1:8200 (windows) | export VAULT_ADDR="http://127.0.0.1:8200" (linux and mac)
+        - then we can run the command "vault status"
+        - then we want to log in by running "vault login our_root_token"
+        - so after logging we can start interacting with vault
+        - when we are using vault, they include a key store called a secret which we are goign to us that
+        - so now we are going to add our "phone_number" and its sensitive value into vault using the command: vault kv put secret/app phone_number=867-5309
+        - here we need to have something that can go and query our secret from vault, in the xact path where we stored our secret
+        - so we come back to our files and create a new direcotry called "vault"
+        - under that we create "main.tf" and we add:
+            - our provider configuration (note: using the root token like this is not a best practice, in fact we should not use it like this); we are 
+            - a data lock in there also because we want that this data block go and query our secret from vault (from the exact path where we stored our secret)
+            - an output block, because we want to see the info that was queried = the result we mean
+            - then we move to the "vault" folder
+            - then "terraform init" --> to pull down the vault plugin
+            - then "apply"
+            - here we see that terraform is saying that "output refers to sensitive values" --> because terraform is smart enough to know that we did retrieve data from vault and it knows that vault is always stores sensitve values
+            - so terraform is suggesting to mark that output as sensitive to just don't output your sensitve information like how it happened right now
+            - so after addint the argument "sensitive = true" to the output
+            - then run "apply" --> we seet that's marked as sensitive
+            - if we run "terraform output" --> the "phone_"number" will be hiden
+            - if we run "terraform output phone_number" --> we will have a lot of info including the value of the phone number
+            - to have only the value of the phone_number we go back to the output block and we modify it to be like this:
+                - output "phone_number" {value = data.vault_generic_secret.phone_number.data["phone_number"]
+                sensitive = true
+            - then "apply" and we run "terraform output phone_number" --> only the value will be displayed
+            - as a use case for that pulled secret from vault, we can create a new resource and pass in that retrieved data from vault into an argument (see "main.tf" under vault folder)
