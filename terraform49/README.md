@@ -3,7 +3,7 @@
 
 ## Step 53:
 - we are going to work with terraform cloud - workspaces
-- see the .pdf for more details
+- see the .pdf file for more details
 - what we are going to do:
     - task 1: Review Terraform Cloud Workspaces User Interface
     - task 2: Create a Terraform Cloud Workspace for DEV deployments
