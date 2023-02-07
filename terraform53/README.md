@@ -2,5 +2,5 @@
 
 
 ## Step 57:
-- we are going to work with terraform cloud - Sentinel Policy
+- we are going to work with terraform cloud - VCS Workflow
 - see the .pdf file for more details
